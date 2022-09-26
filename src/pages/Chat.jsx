@@ -196,6 +196,9 @@ const Container = styled.div`
     &::placeholder {
       color: rgba(255, 255, 255, 0.7);
     }
+    &:focus{
+      outline:none;
+    }
   }
   .flex-search {
     overflow-y: auto;
