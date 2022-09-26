@@ -2,20 +2,34 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import { c1, c2, c3, c4, c5 } from "../assets/ColorTheme";
 import axios from "axios";
 import { allUsersRoute, setAvatarRoute, host } from "../utils/APIRoutes";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
 import { io } from "socket.io-client";
+import useIsTabVisible from "../assets/useIsTabVisible";
 
 const Chat = () => {
+  
   const socket = useRef();
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isOnline, setIsOnline] = useState(false);
+  const isVisible = useIsTabVisible()
+  // setIsOnline(isVisible)
+  console.log(isVisible)
+
+  // useEffect(()=>{
+  //   const check = async()=>{
+
+  //   }
+  //   check()
+  // },[isOnline])
 
   useEffect(() => {
     const check = async () => {
@@ -84,11 +98,12 @@ const Container = styled.div`
   justify-content: center;
   gap: 1rem;
   align-items: center;
-  background-color: #131324;
+  background-color: ${c1};
   .container {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
     height: 85vh;
     width: 85vw;
-    background-color: #00000076;
+    background-color: ${c2};
     display: grid;
     grid-template-columns: 25% 75%;
     @media screen and (min-width: 720px) and (max-width: 1080px) {

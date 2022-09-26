@@ -1,0 +1,6 @@
+export const c1 = "#F2F2F2"
+export const c2 = "#D9D9D9"
+export const c3 = "#A6A6A6"
+export const c4 = "#7f7f7f"
+export const c5 = "#404040"
+export const c6 = "#262621"

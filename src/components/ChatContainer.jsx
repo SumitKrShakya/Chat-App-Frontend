@@ -5,6 +5,7 @@ import { getAllMessagesRoute, sendMessageRoute } from "../utils/APIRoutes";
 import ChatInput from "./ChatInput";
 import Logout from "./Logout";
 import {v4 as uuidv4} from 'uuid'
+import { c1, c2, c3, c4, c5, c6 } from "../assets/ColorTheme";
 
 const ChatContainer = ({ currentChat, currentUser, socket }) => {
   const [messages, setMessages] = useState([]);
@@ -12,6 +13,7 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
   const scrollRef = useRef()
   useEffect(() => {
     const check = async () => {
+      setMessages([])
       if(!(currentUser && currentChat)) return;
       const response = await axios.post(getAllMessagesRoute, {
         from: currentUser._id,
@@ -22,7 +24,6 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
     check();
   }, [currentChat]);
   const handleSendMsg = async (msg) => {
-
     await axios.post(sendMessageRoute, {
       from: currentUser._id,
       to: currentChat._id,
@@ -75,15 +76,15 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
             <Logout />
           </div>
           <div className="chat-messages">
-            {messages.map((message,index) => {
+            {messages.map((message,index, array) => {
               return (
                 <div ref ={scrollRef} key = {uuidv4()}>
                   <div
                     className={`message ${
                       message.fromSelf ? "sended" : "recieved"
-                    }`}
+                    }` }
                   >
-                    <div className="content">
+                    <div className={message.fromSelf && index===array.length-1 ?  "asend content" : !message.fromSelf && index===array.length-1 ? "rres content " : `content`}>
                       <p>{message.message}</p>
                     </div>
                   </div>
@@ -122,7 +123,7 @@ const Container = styled.div`
       }
       .username {
         h3 {
-          color: white;
+          color: ${c4};
         }
       }
     }
@@ -156,16 +157,47 @@ const Container = styled.div`
         }
       }
     }
+    .asend {
+      animation: zoominsend 1s forwards;
+    }
+    .rres {
+      animation: zoominrecieve 1s forwards;
+    }
     .sended {
       justify-content: flex-end;
       .content {
-        background-color: #4f04ff21;
+        background-color: ${c6};
+        border-radius:1rem 1rem 0rem 1rem;
       }
+
     }
     .recieved {
       justify-content: flex-start;
       .content {
-        background-color: #9900ff20;
+        background-color: ${c5};
+        border-radius:0rem 1rem 1rem 1rem;
+      }
+    }
+    @keyframes zoominsend {
+      0% {
+        transform-origin: 100% 100%;
+        transform: scale(0) translateY(100%) translateX(100%);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(1) translateY(0%) translateX(0%);
+        opacity: 1;
+      }
+    }
+    @keyframes zoominrecieve {
+      0% {
+        transform-origin: 0% 0%;
+        transform: scale(0) translateY(-100%) translateX(-100%);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(1) translateY(0%) translateX(0%);
+        opacity: 1;
       }
     }
   }

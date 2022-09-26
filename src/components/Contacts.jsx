@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Logo from "../assets/logo.svg";
+import { c1, c2, c3, c4, c5, c6 } from "../assets/ColorTheme";
+
 
 const Contacts = ({ contacts, currentUser, changeChat }) => {
   const [currentUserName, setCurrentUserName] = useState(undefined);
@@ -15,8 +17,8 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
   }, [currentUser]);
 
   const changeCurrentChat = (index, contact) => {
-    setCurrentSelected(index);
     changeChat(contact);
+    setCurrentSelected(index);
   };
 
   return (
@@ -25,7 +27,7 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
         <Container>
           <div className="brand">
             <img src={Logo} alt="logo" />
-            <h3>snappy</h3>
+            <h3>Chit Chat</h3>
           </div>
           <div className="contacts">
             {contacts.map((contact, index) => {
@@ -71,8 +73,9 @@ const Container = styled.div`
   display: grid;
   grid-template-rows: 10% 75% 15%;
   overflow: hidden;
-  background-color: #080420;
+  background-color: ${c4};
   .brand {
+    box-shadow:rgb(255 255 255 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(255 255 255) 0px 0px 3px 0px inset;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -86,24 +89,28 @@ const Container = styled.div`
     }
   }
   .contacts {
+    box-shadow:rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(10 37 64 / 35%) 0px -2px 6px 0px inset;
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow: auto;
-    gap: 0.8rem;
+    gap: 0rem;
     &::-webkit-scrollbar {
       width: 0.2rem;
       &-thumb {
-        background-color: #ffffff39;
+        background-color: ${c3};
         width: 0.1rem;
         border-radius: 1rem;
       }
     }
     .contact {
-      background-color: #ffffff34;
+      background-color: ;
+      border:1px solid ${c4};
+      border-bottom-color:${c3} ;
+      border-top-color:${c3} ;
       min-height: 5rem;
       cursor: pointer;
-      width: 90%;
+      width: 95%;
       border-radius: 0.2rem;
       padding: 0.4rem;
       display: flex;
@@ -122,11 +129,13 @@ const Container = styled.div`
       }
     }
     .selected {
-      background-color: #9a86f3;
+      background-color: ${c3};
+      border-color:${c3};
     }
   }
   .current-user {
-    background-color: #0d0d30;
+    box-shadow:rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(255 255 255 / 35%) 0px 0px 6px 0px inset;
+    background-color: ${c4};
     display: flex;
     justify-content: center;
     align-items: center;
