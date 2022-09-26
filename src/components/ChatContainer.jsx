@@ -4,17 +4,17 @@ import styled from "styled-components";
 import { getAllMessagesRoute, sendMessageRoute } from "../utils/APIRoutes";
 import ChatInput from "./ChatInput";
 import Logout from "./Logout";
-import {v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from "uuid";
 import { c1, c2, c3, c4, c5, c6 } from "../assets/ColorTheme";
 
 const ChatContainer = ({ currentChat, currentUser, socket }) => {
   const [messages, setMessages] = useState([]);
-  const [arrivalMessage, setArrivalMessage] = useState(null)
-  const scrollRef = useRef()
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const scrollRef = useRef();
   useEffect(() => {
     const check = async () => {
-      setMessages([])
-      if(!(currentUser && currentChat)) return;
+      setMessages([]);
+      if (!(currentUser && currentChat)) return;
       const response = await axios.post(getAllMessagesRoute, {
         from: currentUser._id,
         to: currentChat._id,
@@ -29,33 +29,32 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
       to: currentChat._id,
       message: msg,
     });
-    socket.current.emit('send-msg',{
-      to:currentChat._id,
-      from:currentUser._id,
+    socket.current.emit("send-msg", {
+      to: currentChat._id,
+      from: currentUser._id,
       msg,
-    })
+    });
 
-    const msgs = [...messages]
-    msgs.push({fromSelf:true, message:msg})
-    setMessages(msgs)
-
+    const msgs = [...messages];
+    msgs.push({ fromSelf: true, message: msg });
+    setMessages(msgs);
   };
 
-  useEffect(()=>{
-    if(socket.current){
-      socket.current.on('msg-recieve', (msg)=>{
-        setArrivalMessage({fromSelf:false, message:msg})
-      })
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on("msg-recieve", (msg) => {
+        setArrivalMessage({ fromSelf: false, message: msg });
+      });
     }
-  },[])
+  }, []);
 
-  useEffect(()=>{
-    arrivalMessage && setMessages((prev)=>[...prev, arrivalMessage])
-  },[arrivalMessage])
+  useEffect(() => {
+    arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage]);
 
-  useEffect(()=>{
-    scrollRef.current?.scrollIntoView({behaviour:'smooth'})
-  },[messages])
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
+  }, [messages]);
 
   return (
     <>
@@ -76,15 +75,23 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
             <Logout />
           </div>
           <div className="chat-messages">
-            {messages.map((message,index, array) => {
+            {messages.map((message, index, array) => {
               return (
-                <div ref ={scrollRef} key = {uuidv4()}>
+                <div ref={scrollRef} key={uuidv4()}>
                   <div
                     className={`message ${
                       message.fromSelf ? "sended" : "recieved"
-                    }` }
+                    }`}
                   >
-                    <div className={message.fromSelf && index===array.length-1 ?  "asend content" : !message.fromSelf && index===array.length-1 ? "rres content " : `content`}>
+                    <div
+                      className={
+                        message.fromSelf && index === array.length - 1
+                          ? "asend content"
+                          : !message.fromSelf && index === array.length - 1
+                          ? "rres content "
+                          : `content`
+                      }
+                    >
                       <p>{message.message}</p>
                     </div>
                   </div>
@@ -167,15 +174,14 @@ const Container = styled.div`
       justify-content: flex-end;
       .content {
         background-color: ${c6};
-        border-radius:1rem 1rem 0rem 1rem;
+        border-radius: 1rem 1rem 0rem 1rem;
       }
-
     }
     .recieved {
       justify-content: flex-start;
       .content {
         background-color: ${c5};
-        border-radius:0rem 1rem 1rem 1rem;
+        border-radius: 0rem 1rem 1rem 1rem;
       }
     }
     @keyframes zoominsend {
